@@ -29,11 +29,13 @@ import java.io.BufferedReader;
 import java.io.FileReader; 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JProgressBar;
 import org.jlab.groot.base.GStyle;
 import org.jlab.groot.data.GraphErrors;
+import org.jlab.groot.data.H1F;
 
 
 /**
@@ -143,9 +145,7 @@ public class RICHDetector extends JFrame {
                 
                 int hv = HV_List.getSelectedIndex(); 
                 int od = OD_List.getSelectedIndex();
-                
-                System.out.println(hv);
-                System.out.println(od);
+               
                 String parameter = (String) Parameter_List.getSelectedItem();
                 parameter = parameter.toLowerCase();
                 String pmt = selectedPMT; 
@@ -153,10 +153,6 @@ public class RICHDetector extends JFrame {
                 // get the data
                 List<Double> data = exp.getData(pmt, parameter, hv, od);
                 List<Double> y = new LinkedList<Double>();    
-                
-                
-                
-                
                 
                 ParameterGraph paraGraph = new ParameterGraph(pmt, parameter, hv, od, data, y); 
                                 
@@ -171,7 +167,46 @@ public class RICHDetector extends JFrame {
                 paraGraph.setVisible(true); 
             }
         }
-    }; 
+    };
+    
+        ActionListener generateHistogram = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            
+                
+                int hv = HV_List.getSelectedIndex(); 
+                int od = OD_List.getSelectedIndex();
+                
+                String parameter = (String) Parameter_List.getSelectedItem();
+                parameter = parameter.toLowerCase();
+                String pmt = selectedPMT; 
+                
+                
+                JFrame frame = new JFrame();
+                EmbeddedCanvas canvas = new EmbeddedCanvas(); 
+ 
+                H1F histo = new H1F("testing", 1000, 0, 1000);
+                
+                canvas.getPad(0).setTitle(parameter.toUpperCase());
+                histo.setTitleX("Bin");
+                histo.setTitleY("Frequency");
+                
+                Random randomGenerator = new Random();
+                
+                // fill histogram
+		for(int i=0; i<50000; i++){
+                    histo.fill(randomGenerator.nextGaussian());
+		}
+                
+                histo.setOptStat(1110);
+                canvas.draw(histo);
+                canvas.setStatBoxFontSize(18);    
+                frame.setSize(800, 600);
+                frame.add(canvas);
+                frame.setVisible(true);
+                
+            }
+    };
      
     public RICHDetector(){
        
@@ -205,6 +240,7 @@ public class RICHDetector extends JFrame {
         // add action listeners
         this.showGain_CheckBox.addActionListener(checkBoxClicked);
         this.genGraph.addActionListener(generateGraph);  
+        this.genHisto.addActionListener(generateHistogram);
     } 
      
     private void addButtons(){
