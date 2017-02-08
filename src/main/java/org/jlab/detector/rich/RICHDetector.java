@@ -76,6 +76,8 @@ public class RICHDetector extends JFrame {
     private DetectorView2D_ML dectView;
     private RichDetectorPane2D pane;
     
+    private final DeviceNameFile deviceFile = new DeviceNameFile("src/main/resources/gains_inc.txt"); 
+    
     // Action Listeners
     ActionListener checkBoxClicked = new ActionListener() {
         @Override
@@ -180,30 +182,20 @@ public class RICHDetector extends JFrame {
                 String parameter = (String) Parameter_List.getSelectedItem();
                 parameter = parameter.toLowerCase();
                 String pmt = selectedPMT; 
+                 
+                List<List<Double>> data = new LinkedList<List<Double>>();
+                
+                // get all values for the pmt
+                for (int i = 0; i < deviceFile.getNumberOfDevices(); i++){                
+                    data.add(exp.getData(deviceFile.getDevices().get(i), parameter, hv, od));
+                }
                 
                 
-                JFrame frame = new JFrame();
-                EmbeddedCanvas canvas = new EmbeddedCanvas(); 
- 
-                H1F histo = new H1F("testing", 1000, 0, 1000);
+                HistogramFrame histo = new HistogramFrame(parameter.toUpperCase(), data, hv, od); 
                 
-                canvas.getPad(0).setTitle(parameter.toUpperCase());
-                histo.setTitleX("Bin");
-                histo.setTitleY("Frequency");
                 
-                Random randomGenerator = new Random();
-                
-                // fill histogram
-		for(int i=0; i<50000; i++){
-                    histo.fill(randomGenerator.nextGaussian());
-		}
-                
-                histo.setOptStat(1110);
-                canvas.draw(histo);
-                canvas.setStatBoxFontSize(18);    
-                frame.setSize(800, 600);
-                frame.add(canvas);
-                frame.setVisible(true);
+                histo.setSize(600,800);
+                histo.setVisible(true);
                 
             }
     };
