@@ -178,7 +178,10 @@ public class RichDetectorPane2D extends DetectorPane2D {
                 
                 //System.out.println(pmtLocationCounter); 
                 
-                MAPMT_Shape shape = new MAPMT_Shape(DetectorType.UNDEFINED,pmtx,2,pmty, deviceNames.get(pmtLocationCounter), pmtLocationCounter);
+                DetectorShape2D shape = new DetectorShape2D(DetectorType.UNDEFINED,pmtx,2,pmty);
+                
+                shape.shapeTitle = deviceNames.get(pmtLocationCounter);
+                
                 shape.createBarXY(9,9);                  
                 shape.getShapePath().translateXYZ(x,y,0);
                 shape.setColor( 245,  245, 245);

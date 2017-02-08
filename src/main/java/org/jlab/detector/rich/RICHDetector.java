@@ -189,7 +189,7 @@ public class RICHDetector extends JFrame {
         // Add pane to the frame
         this.add(this.pane); 
         
-        this.initFrameSettings(1000, 800);
+        this.initFrameSettings(1100, 800);
     }
     
     private void initFrameSettings(int width, int height){
