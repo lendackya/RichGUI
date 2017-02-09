@@ -171,7 +171,7 @@ public class RICHDetector extends JFrame {
         }
     };
     
-        ActionListener generateHistogram = new ActionListener() {
+    ActionListener generateHistogram = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             
@@ -190,11 +190,9 @@ public class RICHDetector extends JFrame {
                     data.add(exp.getData(deviceFile.getDevices().get(i), parameter, hv, od));
                 }
                 
-                
                 HistogramFrame histo = new HistogramFrame(parameter.toUpperCase(), data, hv, od); 
                 
-                
-                histo.setSize(600,800);
+                histo.setSize(800,600);
                 histo.setVisible(true);
                 
             }
@@ -217,6 +215,7 @@ public class RICHDetector extends JFrame {
         this.add(this.pane); 
         
         this.initFrameSettings(1100, 800);
+       
     }
     
     private void initFrameSettings(int width, int height){

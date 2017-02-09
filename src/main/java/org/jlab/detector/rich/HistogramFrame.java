@@ -24,21 +24,51 @@ public class HistogramFrame extends JFrame{
     
     HistogramFrame(String parameter, List<List<Double>>  data, int hv, int od){
         
+        System.out.println("Start init Histogram"); 
         EmbeddedCanvas canvas = new EmbeddedCanvas(); 
-            
-        this.histogram = new H1F("Testing", 100, 0, 100); 
-    
+          
         List<Double> averages = this.findAverages(data);
         
-        for (int i = 0; i < averages.size(); i++){ this.histogram.fill(averages.get(i)); }
+        double min = this.findMin(averages);
+        double max = this.findMax(averages);
         
+        this.histogram = new H1F(parameter.toUpperCase(), 1000, 0, 1000); 
+       
+        for (int i = 0; i < averages.size(); i++){ this.histogram.fill(averages.get(i)); }
+
         canvas.draw(this.histogram);
         canvas.getPad(0).setTitle(parameter.toUpperCase());
-        this.histogram.setTitleX("Bin");
-        this.histogram.setTitleY("Frequency"); 
+        canvas.getPad(0).getAxisFrame().getAxisX().setTitle("Bin");
+        canvas.getPad(0).getAxisFrame().getAxisY().setTitle("Frequency");
         this.add(canvas);
+        
+        System.out.println("Done init Histogram"); 
     }
     
+    
+    private double findMin(List<Double> data){
+        
+        double min = Double.POSITIVE_INFINITY; 
+        
+        for (int i = 0; i < data.size(); i++){
+            
+            if (data.get(i) > min){ min = data.get(i); }
+        }
+    
+        return min;     
+    }
+    
+    private double findMax(List<Double> data){
+    
+        double max = Double.NEGATIVE_INFINITY; 
+        
+        for (int i = 0; i < data.size(); i++){
+            
+            if (data.get(i) > max){ max = data.get(i); }
+        }
+    
+        return max; 
+    }
     
     private List<Double> findAverages(List<List<Double>>  data){
            
