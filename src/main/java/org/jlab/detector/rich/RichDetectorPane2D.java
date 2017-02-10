@@ -8,6 +8,7 @@ package org.jlab.detector.rich;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Vector;
@@ -124,7 +125,7 @@ public class RichDetectorPane2D extends DetectorPane2D {
         this.initOutline();
         this.initToolbar();
 
-        this.updateBox();                               
+        this.updateBox();  
     }
     
     private void initToolbar(){
@@ -206,7 +207,7 @@ public class RichDetectorPane2D extends DetectorPane2D {
                     }
                 }
             }
-        }           
+        }
     } 
     
     private void initOutline(){
@@ -259,5 +260,25 @@ public class RichDetectorPane2D extends DetectorPane2D {
     
     public DetectorView2D getDetectorView(){
         return this.view2D;
+    }
+    
+    public ArrayList<JCheckBox> getCheckBoxes(){
+    
+        return (ArrayList<JCheckBox>) this.checkButtons; 
+    }
+    
+    public void disableCheckBox(String name){
+    
+        ArrayList<JCheckBox> cb = new ArrayList<JCheckBox>(); 
+        System.out.println("Function Entered!\n\n"); 
+        System.out.println(cb.size());
+        
+        for (int i = 0; i < cb.size(); i++){
+            System.out.println(cb.get(i).getText());
+            if (cb.get(i).getText().equals(name)){
+                System.out.println("Click!\n\n"); 
+                cb.get(i).doClick();
+            }
+        }
     }
 }

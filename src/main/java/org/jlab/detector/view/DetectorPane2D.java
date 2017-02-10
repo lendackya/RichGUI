@@ -30,7 +30,7 @@ public class DetectorPane2D extends JPanel implements ActionListener {
     protected JPanel          buttonsPane = null;
     protected JPanel          toolbarPane = null;
     protected DetectorView2D       view2D = new DetectorView2D();
-    List<JCheckBox>       checkButtons = new ArrayList<JCheckBox>();
+    protected List<JCheckBox>       checkButtons = new ArrayList<JCheckBox>();
     JPanel                checkBoxPane = null;
     
     public DetectorPane2D(){

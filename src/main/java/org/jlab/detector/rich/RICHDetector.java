@@ -29,11 +29,13 @@ import java.io.BufferedReader;
 import java.io.FileReader; 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JProgressBar;
 import org.jlab.groot.base.GStyle;
 import org.jlab.groot.data.GraphErrors;
+import org.jlab.groot.data.H1F;
 
 
 /**
@@ -74,6 +76,8 @@ public class RICHDetector extends JFrame {
     private DetectorView2D_ML dectView;
     private RichDetectorPane2D pane;
     
+    private final DeviceNameFile deviceFile = new DeviceNameFile("src/main/resources/gains_inc.txt"); 
+    
     // Action Listeners
     ActionListener checkBoxClicked = new ActionListener() {
         @Override
@@ -107,7 +111,7 @@ public class RICHDetector extends JFrame {
                     int green = (int) (fraction*endCol.getGreen()+ (1-fraction)*startCol.getGreen()); 
                     int blue = (int) (fraction*endCol.getBlue()+ (1-fraction)*startCol.getBlue()); 
                     currCol = new Color(red, green, blue); 
-                    ///
+                    
                     
                     // loop through the pixels of the PMT and change their color. 
                     for (int j = 0; j < pixels.length; j++){
@@ -143,9 +147,7 @@ public class RICHDetector extends JFrame {
                 
                 int hv = HV_List.getSelectedIndex(); 
                 int od = OD_List.getSelectedIndex();
-                
-                System.out.println(hv);
-                System.out.println(od);
+               
                 String parameter = (String) Parameter_List.getSelectedItem();
                 parameter = parameter.toLowerCase();
                 String pmt = selectedPMT; 
@@ -153,10 +155,6 @@ public class RICHDetector extends JFrame {
                 // get the data
                 List<Double> data = exp.getData(pmt, parameter, hv, od);
                 List<Double> y = new LinkedList<Double>();    
-                
-                
-                
-                
                 
                 ParameterGraph paraGraph = new ParameterGraph(pmt, parameter, hv, od, data, y); 
                                 
@@ -171,7 +169,35 @@ public class RICHDetector extends JFrame {
                 paraGraph.setVisible(true); 
             }
         }
-    }; 
+    };
+    
+    ActionListener generateHistogram = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            
+                
+                int hv = HV_List.getSelectedIndex(); 
+                int od = OD_List.getSelectedIndex();
+                
+                String parameter = (String) Parameter_List.getSelectedItem();
+                parameter = parameter.toLowerCase();
+                String pmt = selectedPMT; 
+                 
+                List<List<Double>> data = new LinkedList<List<Double>>();
+                
+                // get all values for the pmt
+                // Thread it up!!
+                for (int i = 0; i < deviceFile.getNumberOfDevices(); i++){                
+                    data.add(exp.getData(deviceFile.getDevices().get(i), parameter, hv, od));
+                }
+                
+                HistogramFrame histo = new HistogramFrame(parameter.toUpperCase(), data, hv, od); 
+                
+                histo.setSize(800,600);
+                histo.setVisible(true);
+                
+            }
+    };
      
     public RICHDetector(){
        
@@ -190,6 +216,7 @@ public class RICHDetector extends JFrame {
         this.add(this.pane); 
         
         this.initFrameSettings(1100, 800);
+       
     }
     
     private void initFrameSettings(int width, int height){
@@ -205,6 +232,7 @@ public class RICHDetector extends JFrame {
         // add action listeners
         this.showGain_CheckBox.addActionListener(checkBoxClicked);
         this.genGraph.addActionListener(generateGraph);  
+        this.genHisto.addActionListener(generateHistogram);
     } 
      
     private void addButtons(){

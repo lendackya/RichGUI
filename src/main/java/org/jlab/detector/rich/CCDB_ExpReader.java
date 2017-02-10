@@ -36,11 +36,6 @@ public class CCDB_ExpReader{
         CCDB_ExpReader exp = new CCDB_ExpReader(); 
         
         List<Double> data = exp.getData("CA7452", "yeild", 0, 0); 
-
-        for (Double num : data){
-        
-            System.out.println(num); 
-        }  
     }
        
     public CCDB_ExpReader(){
@@ -53,7 +48,7 @@ public class CCDB_ExpReader{
     
         this.asgmt = this.provider.getData("/test/rich/exp/" + pmt);
         
-        System.out.println("Retreiving Data from: /test/rich/exp/" + pmt);
+        //System.out.println("Retreiving Data from: /test/rich/exp/" + pmt);
         
         if (parameter.equals("mu*eff20")){
             Vector<Double> mu = this.asgmt.getColumnValuesDouble("mu"); 
@@ -107,7 +102,7 @@ public class CCDB_ExpReader{
                 
         Vector<List<Double>> splitData = new Vector<List<Double>>(); 
         
-        System.out.println(data.size()); 
+        //System.out.println(data.size()); 
         
         List<Double> od_13 = data.subList(0, 256);
         List<Double> od_14 = data.subList(256, 512);
