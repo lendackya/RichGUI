@@ -186,6 +186,7 @@ public class RICHDetector extends JFrame {
                 List<List<Double>> data = new LinkedList<List<Double>>();
                 
                 // get all values for the pmt
+                // Thread it up!!
                 for (int i = 0; i < deviceFile.getNumberOfDevices(); i++){                
                     data.add(exp.getData(deviceFile.getDevices().get(i), parameter, hv, od));
                 }
