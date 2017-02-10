@@ -111,7 +111,7 @@ public class RICHDetector extends JFrame {
                     int green = (int) (fraction*endCol.getGreen()+ (1-fraction)*startCol.getGreen()); 
                     int blue = (int) (fraction*endCol.getBlue()+ (1-fraction)*startCol.getBlue()); 
                     currCol = new Color(red, green, blue); 
-                    ///
+                    
                     
                     // loop through the pixels of the PMT and change their color. 
                     for (int j = 0; j < pixels.length; j++){
