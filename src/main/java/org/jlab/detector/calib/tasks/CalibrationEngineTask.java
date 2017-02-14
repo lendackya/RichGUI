@@ -49,50 +49,50 @@ public class CalibrationEngineTask {
         }
     }
     
-//    public void processDir(String directory, int maxFiles){
-//        
-//        System.out.println("[Processing directory]");
-//        System.out.println("[Data Listener size = ] " + this.calibrationEngines.size());
-//        
-//        List<String>  fileList = ClasUtilsFile.getFileList(directory);
-//        
-//        int evCounter = 0;
-//        int nFilesToProcess = fileList.size();
-//        if(nFilesToProcess>maxFiles) nFilesToProcess = maxFiles;
-//        
-//        for(int i = 0; i < nFilesToProcess; i++){
-//            EvioSource dataSource = new EvioSource();
-//            dataSource.open(fileList.get(i));
-//            System.out.println("[oppening file] --->  opened file # " + i + " file : " + fileList.get(i));
-//            while(dataSource.hasEvent()){
-//                DataEvent event = dataSource.getNextEvent();
-//                if(evCounter==0){
-//                    event.setType(DataEventType.EVENT_START);
-//                } else {
-//                    event.setType(DataEventType.EVENT_ACCUMULATE);
-//                }
-//                evCounter++;
-//                for(IDataEventListener listener : this.calibrationEngines){
-//                    listener.dataEventAction(event);
-//                    if(evCounter%15000==0){
-//                        System.out.println("-------> updating timers at EVENT # " + evCounter);
-//                        listener.timerUpdate();
-//                    }
-//                }                
-//            }            
-//        }
-//        
-//        DataEvent event = EvioFactory.createEvioEvent();
-//        event.setType(DataEventType.EVENT_STOP);
-//        for(IDataEventListener listener : this.calibrationEngines){
-//            listener.dataEventAction(event);
-//        }
-//    }
+    public void processDir(String directory, int maxFiles){
+        
+        System.out.println("[Processing directory]");
+        System.out.println("[Data Listener size = ] " + this.calibrationEngines.size());
+        
+        List<String>  fileList = ClasUtilsFile.getFileList(directory);
+        
+        int evCounter = 0;
+        int nFilesToProcess = fileList.size();
+        if(nFilesToProcess>maxFiles) nFilesToProcess = maxFiles;
+        
+        for(int i = 0; i < nFilesToProcess; i++){
+            EvioSource dataSource = new EvioSource();
+            dataSource.open(fileList.get(i));
+            System.out.println("[oppening file] --->  opened file # " + i + " file : " + fileList.get(i));
+            while(dataSource.hasEvent()){
+                DataEvent event = dataSource.getNextEvent();
+                if(evCounter==0){
+                    event.setType(DataEventType.EVENT_START);
+                } else {
+                    event.setType(DataEventType.EVENT_ACCUMULATE);
+                }
+                evCounter++;
+                for(IDataEventListener listener : this.calibrationEngines){
+                    listener.dataEventAction(event);
+                    if(evCounter%15000==0){
+                        System.out.println("-------> updating timers at EVENT # " + evCounter);
+                        listener.timerUpdate();
+                    }
+                }                
+            }            
+        }
+        
+        DataEvent event = EvioFactory.createEvioEvent();
+        event.setType(DataEventType.EVENT_STOP);
+        for(IDataEventListener listener : this.calibrationEngines){
+            listener.dataEventAction(event);
+        }
+    }
     
     
     public void showResults(){
         JFrame frame = new JFrame();
-        //CalibrationConstantsView view = new CalibrationConstantsView();
+        CalibrationConstantsView view = new CalibrationConstantsView();
         CalibrationEngineView  view = new CalibrationEngineView(calibrationEngines.get(0));
         frame.add(view);
         /*for(CalibrationEngine engine : this.calibrationEngines){
@@ -104,21 +104,21 @@ public class CalibrationEngineTask {
         frame.setVisible(true);
     }
     
-//    public static void main(String[] args){
-//        String directory = args[0];
-//        String nfilesstr = args[1];
-//        
-//        Integer nfiles = Integer.parseInt(nfilesstr);
-//        List<String>  engineNames = new ArrayList<String>();
-//        for(int i = 2; i < args.length; i++){
-//            engineNames.add(args[i]);
-//        }
-//        
-//        CalibrationEngineTask task = new CalibrationEngineTask();
-//        for(int i = 0 ; i < engineNames.size(); i++){
-//            task.addEngine(engineNames.get(i));
-//        }
-//        task.processDir(directory, nfiles);
-//        task.showResults();
-//    }
+    public static void main(String[] args){
+        String directory = args[0];
+        String nfilesstr = args[1];
+        
+        Integer nfiles = Integer.parseInt(nfilesstr);
+        List<String>  engineNames = new ArrayList<String>();
+        for(int i = 2; i < args.length; i++){
+            engineNames.add(args[i]);
+        }
+        
+        CalibrationEngineTask task = new CalibrationEngineTask();
+        for(int i = 0 ; i < engineNames.size(); i++){
+            task.addEngine(engineNames.get(i));
+        }
+        task.processDir(directory, nfiles);
+        task.showResults();
+    }
 }

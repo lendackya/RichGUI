@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static java.awt.image.ImageObserver.WIDTH;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JButton;
@@ -33,6 +34,7 @@ import java.util.Random;
 import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JProgressBar;
+import org.jlab.groot.base.ColorPalette;
 import org.jlab.groot.base.GStyle;
 import org.jlab.groot.data.GraphErrors;
 import org.jlab.groot.data.H1F;
@@ -43,7 +45,7 @@ import org.jlab.groot.data.H1F;
  * @author Andrew
  */
 public class RICHDetector extends JFrame { 
-    
+        
     // Constants used to create MAPMT array
     public static double step1 = 5.3;
     public static double step2 = 20.1;
@@ -89,34 +91,36 @@ public class RICHDetector extends JFrame {
                 int counter = 0; 
                 // get all the shapes in the MAPMT layer
                 LinkedList<DetectorShape2D> shapes = pane.getAllShapes("MAPMTs");
-                  
-                double min = dectView.colorAxis.getRange().getMin();
-                double max = dectView.colorAxis.getRange().getMax();
-                //System.out.println(min); 
-                //System.out.println(max); 
                 
-                Color startCol = new Color(0,255,0);
-                Color endCol = new Color(0,0,139);
+            
+                Color startCol = new Color(255,165,0);
+                Color endCol = new Color(0,0,0);
                 Color currCol = startCol; 
                 // loop through all the shapes
                 for (int i = 0; i < shapes.size(); i++){
                     
                     String name = shapes.get(i).shapeTitle; 
                     
+                    List<Double> gains = exp.getData(name, "gain", 0, 0);
+                    
                     DetectorShape2D[][] pixels = pane.getPixelsFor(name); 
                     
                     // FIX ME: This can't be a thing
+                    // fade the color
                     float fraction = ((float)i)/(float)shapes.size(); 
                     int red = (int) (fraction*endCol.getRed() + (1-fraction)*startCol.getRed()); 
                     int green = (int) (fraction*endCol.getGreen()+ (1-fraction)*startCol.getGreen()); 
                     int blue = (int) (fraction*endCol.getBlue()+ (1-fraction)*startCol.getBlue()); 
                     currCol = new Color(red, green, blue); 
                     
+                    Color color = ColorPalette.getColor((int) gains.get(0).doubleValue() );
                     
                     // loop through the pixels of the PMT and change their color. 
                     for (int j = 0; j < pixels.length; j++){
                         for (int k = 0; k < pixels[j].length; k++){ 
-                            pixels[j][k].setColor(red, green, blue);
+                            
+                            
+                            pixels[j][k].setColor(color.getRed(), color.getGreen(), color.getBlue());
                         }
                     }
                 }
@@ -126,13 +130,7 @@ public class RICHDetector extends JFrame {
                 // turn all pmts back to original color
                 LinkedList<DetectorShape2D> shapes = pane.getAllShapes("MAPMTs");
                 
-                for (DetectorShape2D shape : shapes){
-                
-                    
-                    
-                    shape.setColor(245, 245, 245);
-                }
-                dectView.colorAxis.setRange(0.0, 10.0);
+                for (DetectorShape2D shape : shapes){ shape.setColor(245, 245, 245); }
                 pane.update();     
             }      
         }      
