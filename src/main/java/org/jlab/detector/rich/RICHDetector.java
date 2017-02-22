@@ -114,11 +114,10 @@ public class RICHDetector extends JFrame {
                     currCol = new Color(red, green, blue); 
                     
                     Color color = ColorPalette.getColor((int) gains.get(0).doubleValue() );
-                    
+                   
                     // loop through the pixels of the PMT and change their color. 
                     for (int j = 0; j < pixels.length; j++){
-                        for (int k = 0; k < pixels[j].length; k++){ 
-                            
+                        for (int k = 0; k < pixels[j].length; k++){     
                             
                             pixels[j][k].setColor(color.getRed(), color.getGreen(), color.getBlue());
                         }
