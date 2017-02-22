@@ -53,7 +53,7 @@ public class CCDB_MAPMTs extends SwingWorker<Boolean, Integer>{
             
         try{
             System.out.println("Here");
-            DeviceNameFile pmtNames = new DeviceNameFile("/Users/Andrew/Desktop/mapmts_ccdb/files/pmts_db.txt"); 
+            DeviceNameFile pmtNames = new DeviceNameFile("src/main/resources/pmts_db.txt"); 
         
             for (int i = 0; i < pmtNames.getNumberOfDevices(); i++){
                 //System.out.println(pmtNames.getDevices().get(i));

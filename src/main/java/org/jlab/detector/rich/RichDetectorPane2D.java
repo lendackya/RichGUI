@@ -113,7 +113,9 @@ public class RichDetectorPane2D extends DetectorPane2D {
         super();
                
         // load file to know what to name pmts in array
+        
         this.deviceFile = new DeviceNameFile("src/main/resources/gains_inc.txt"); 
+        System.out.println(this.deviceFile.getFilename()); 
         this.numPMTs = this.deviceFile.getNumberOfDevices();
 
         this.remove(this.view2D);
